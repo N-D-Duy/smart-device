@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-device
+  labels:
+    app: smart-device
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: smart-device
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: smart-device
+        version: v1
+    spec:
+      serviceAccountName: mock-service-account
+      containers:
+      - name: smart-device
+        image: docker.io/duynguyen03/smart-device:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000

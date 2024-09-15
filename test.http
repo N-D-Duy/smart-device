@@ -1,0 +1,25 @@
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "UID": 9
+}
+
+
+###
+POST http://localhost:8080/health-records
+Content-Type: application/json
+
+{
+  "UID": 9,
+  "HeartRate": 80,
+  "Steps": 1000,
+  "CaloriesBurned": 2000,
+  "SleepHours": 8
+}
+
+###
+GET http://localhost:8080/users
+
+###
+GET http://localhost:8080/health-records/9
