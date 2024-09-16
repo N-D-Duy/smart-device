@@ -25,9 +25,6 @@ WORKDIR /app
 # Copy the built binary from the builder stage
 COPY --from=builder /app/main .
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 8080
 # Command to run the application

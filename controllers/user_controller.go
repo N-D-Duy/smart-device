@@ -1,45 +1,35 @@
 package controllers
 
 import (
-	"health-management/config"
 	"health-management/models"
+	"health-management/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetUsers(c *gin.Context) {
-	var users []models.User
-
-	rows, err := config.DB.Raw("SELECT * FROM users").Rows()
+// GetUsersController handles the HTTP request to fetch all users
+func GetUsersController(c *gin.Context) {
+	users, err := services.GetUsersService()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var user models.User
-		// Sử dụng Rows.Scan để quét dữ liệu từ mỗi hàng vào struct
-		if err := rows.Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt, &user.DeletedAt, &user.UID); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		users = append(users, user)
-	}
 	c.JSON(http.StatusOK, users)
 }
 
-func CreateUser(c *gin.Context) {
+// CreateUserController handles the HTTP request to create a new user
+func CreateUserController(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	result := config.DB.Exec("INSERT INTO users (uid, created_at, updated_at) VALUES (?, NOW(), NOW())", user.UID)
-	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+
+	if err := services.CreateUserService(user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, user)
+
+	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully", "user": user})
 }

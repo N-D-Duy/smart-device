@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: duynguyen03/smart-device-service
-    container_name: smart-device-service
+    image: duynguyen03/smart-device:v1
+    container_name: smart-device
     ports:
       - "8080:8080"
     networks:
@@ -14,11 +14,11 @@ services:
 
   db:
     image: postgres:alpine
-    container_name: smart-device-db
+    container_name: postgres-service
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12332145
-      POSTGRES_DB: test
+      POSTGRES_DB: smart-device-db
     ports:
       - "5432:5432"
     networks:

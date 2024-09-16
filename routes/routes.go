@@ -8,10 +8,9 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	// Routes cho User controller
-	r.GET("/users", controllers.GetUsers)
-	r.POST("/users", controllers.CreateUser)
+	r.GET("/users", controllers.GetUsersController)
+	r.POST("/register", controllers.CreateUserController)
 
 	// Routes cho HealthRecord controller
-	r.POST("/health-records", controllers.CreateHealthRecord)
-	r.GET("/health-records/:uid", controllers.GetHealthRecordsByUserID)
+	r.GET("/health-records/:uid", controllers.GetHealthRecordsByUserIDController)
 }
